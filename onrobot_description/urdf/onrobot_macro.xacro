@@ -5,9 +5,11 @@
     <xacro:macro name="onrobot"
         params="
         onrobot_type
+        namespace:=''
         prefix:=''
         sim_gazebo:=false
         use_fake_hardware:=false
+        control_yaml:='$(find onrobot_driver)/config/default_controllers.yaml'
         connection_type:=serial
         device:=/tmp/ttyUR
         ip_address:=192.168.1.1
@@ -26,7 +28,13 @@
         <!-- Enable the gazebo plugin for simulation -->
         <xacro:if value="${sim_gazebo}">
             <gazebo>
-                <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control"/>
+                <plugin filename="libgz_ros2_control-system.so"
+                    name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+                    <parameters>${control_yaml}</parameters>
+                    <ros>
+                        <namespace>${namespace}</namespace>
+                    </ros>
+                </plugin>
             </gazebo>
         </xacro:if>
 
@@ -34,7 +42,7 @@
         <ros2_control name="OnRobotGripper" type="actuator">
             <hardware>
                 <xacro:if value="${sim_gazebo}">
-                    <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+                    <plugin>gz_ros2_control/GazeboSimSystem</plugin>
                 </xacro:if>
                 <xacro:if value="${use_fake_hardware}">
                     <plugin>test_hardware_components/TestSingleJointActuator</plugin>

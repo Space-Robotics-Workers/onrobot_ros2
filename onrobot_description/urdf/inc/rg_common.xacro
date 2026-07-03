@@ -43,7 +43,7 @@
         </geometry>
       </collision>
     </link>
-    
+
     <gazebo reference="${prefix}onrobot_base_link">
       <mu1>1.0</mu1>
       <mu2>1.0</mu2>
@@ -163,15 +163,6 @@
     <xacro:inner_finger prefix="${prefix}" fingerprefix="${fingerprefix}"/>
   </xacro:macro>
 
-  <!-- Gazebo plugin macro (for ros2_control simulation) -->
-  <xacro:macro name="gazebo_plugin" params="prefix">
-    <gazebo>
-      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-        <!-- Add additional parameters as needed -->
-      </plugin>
-    </gazebo>
-  </xacro:macro>
-  
   <!-- Simple transmission macro for a joint -->
   <xacro:macro name="transmission_macro" params="prefix joint_name">
     <transmission name="${prefix}${joint_name}_trans">

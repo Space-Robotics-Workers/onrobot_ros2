@@ -34,7 +34,12 @@
   </xacro:macro>
 
   <xacro:macro name="finger_joint" params="prefix">
-    <link name="${prefix}finger_width_mock_link"/>
+    <link name="${prefix}finger_width_mock_link">
+      <inertial> <!-- Gazebo requires inertia, even if this isn't a physical link-->
+        <mass value="1.0E-6"/>
+        <inertia ixx="1.0E-6" ixy="1.0E-9" ixz="1.0E-9" iyy="1.0E-6" iyz="1.0E-9" izz="1.0E-6" />
+      </inertial>
+    </link>
     <joint name="${prefix}finger_width" type="prismatic">
       <origin xyz="0 0 0" rpy="0 0 0" />
       <parent link="${prefix}onrobot_base_link" />

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!-- This URDF was artisanally crafted by Jacob Beck (jbeck@spaceroboticsworkers.com) -->
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:macro name="onrobot_control"
+    params="
+        onrobot_type
+        prefix:=''
+        mode:=mock
+        connection_type:=serial
+        device:=/tmp/ttyUR
+        ip_address:=192.168.1.1
+        port:=502
+        ">
+
+    <ros2_control name="${prefix}${onrobot_type}_actuator" type="actuator">
+      <!-- Load appropriate hardware plugin -->
+      <hardware>
+        <xacro:if value="${mode == 'gazebo'}">
+          <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        </xacro:if>
+
+        <xacro:if value="${mode == 'mock'}">
+          <plugin>test_hardware_components/TestSingleJointActuator</plugin>
+        </xacro:if>
+
+        <xacro:if value="${mode == 'real'}">
+          <plugin>onrobot_driver/RGHardwareInterface</plugin>
+          <param name="onrobot_type">${onrobot_type}</param>
+          <param name="prefix">${prefix}</param>
+          <param name="connection_type">${connection_type}</param>
+          <param name="device">${device}</param>
+          <param name="ip_address">${ip_address}</param>
+          <param name="port">${port}</param>
+        </xacro:if>
+      </hardware>
+
+      <!-- Configure joint interfaces -->
+      <joint name="${prefix}finger_width">
+        <command_interface name="position" />
+        <state_interface name="position" />
+      </joint>
+    </ros2_control>
+  </xacro:macro>
+</robot>

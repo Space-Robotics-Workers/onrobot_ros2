@@ -91,7 +91,7 @@
     <xacro:right_outer_knuckle_joint prefix="${prefix}" />
     <xacro:transmission_macro prefix="${prefix}" joint_name="finger_width" />
 
-    <joint name="${prefix}base_joint" type="fixed">
+    <joint name="${prefix}onrobot_base_joint" type="fixed">
       <xacro:insert_block name="origin" />
       <parent link="${parent}" />
       <child link="${prefix}onrobot_base_link" />

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!-- This URDF was artisanally crafted by Jacob Beck (jbeck@spaceroboticsworkers.com) -->
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:macro name="onrobot_gazebo" params="namespace prefix control_yaml">
+    <!-- Load system plugin -->
+    <gazebo>
+      <plugin filename="libgz_ros2_control-system.so"
+        name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <parameters>${control_yaml}</parameters>
+        <ros>
+          <namespace>${namespace}</namespace>
+        </ros>
+      </plugin>
+    </gazebo>
+
+    <!-- Set link simulation parameters -->
+    <gazebo reference="${prefix}onrobot_base_link">
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <selfCollide>false</selfCollide>
+      <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="${prefix}left_outer_knuckle">
+      <mu1>0.1</mu1>
+      <mu2>0.1</mu2>
+      <selfCollide>false</selfCollide>
+      <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="${prefix}right_outer_knuckle">
+      <mu1>0.1</mu1>
+      <mu2>0.1</mu2>
+      <selfCollide>false</selfCollide>
+      <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="${prefix}left_inner_knuckle">
+      <mu1>0.1</mu1>
+      <mu2>0.1</mu2>
+      <selfCollide>false</selfCollide>
+      <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="${prefix}right_inner_knuckle">
+      <mu1>0.1</mu1>
+      <mu2>0.1</mu2>
+      <selfCollide>false</selfCollide>
+      <material>Gazebo/White</material>
+    </gazebo>
+
+    <gazebo reference="${prefix}left_inner_finger">
+      <kp>1000000.0</kp>
+      <kd>1.0</kd>
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <minDepth>0.00001</minDepth>
+      <selfCollide>false</selfCollide>
+      <material>Gazebo/Black</material>
+    </gazebo>
+
+    <gazebo reference="${prefix}right_inner_finger">
+      <kp>1000000.0</kp>
+      <kd>1.0</kd>
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <minDepth>0.00001</minDepth>
+      <selfCollide>false</selfCollide>
+      <material>Gazebo/Black</material>
+    </gazebo>
+  </xacro:macro>
+</robot>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="rg6">
+  <!-- Declare arguments -->
+  <xacro:arg name="namespace" default="" />
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="parent" default="world" />
+  <xacro:arg name="xyz" default="0 0 0" />
+  <xacro:arg name="rpy" default="0 0 0" />
+  <xacro:arg name="mode" default="mock" />
+  <xacro:arg name="connection_type" default="serial" />
+  <xacro:arg name="device" default="/tmp/ttyUR" />
+  <xacro:arg name="ip_address" default="192.168.1.1" />
+  <xacro:arg name="port" default="502" />
+  <xacro:arg name="control_yaml" default="$(find onrobot_driver)/config/default_controllers.yaml" />
+
+
+  <!-- Include required macros -->
+  <xacro:include filename="$(find onrobot_description)/urdf/common/rg.control.xacro" />
+  <xacro:include filename="$(find onrobot_description)/urdf/common/rg.gazebo.xacro" />
+  <xacro:include filename="$(find onrobot_description)/urdf/rg6/rg6.description.xacro" />
+
+  <!-- Build robot -->
+  <link name="world" />
+
+  <xacro:rg6_description prefix="$(arg prefix)" parent="$(arg parent)">
+    <origin xyz="$(arg xyz)" rpy="$(arg rpy)" />
+  </xacro:rg6_description>
+
+  <xacro:onrobot_control onrobot_type="rg6" prefix="$(arg prefix)" mode="$(arg mode)"
+    connection_type="$(arg connection_type)" device="$(arg device)" ip_address="$(arg ip_address)"
+    port="$(arg port)" />
+
+  <xacro:property name="mode" value="$(arg mode)" /> <!-- Get arg as property for evaluation -->
+  <xacro:if value="${mode == 'gazebo'}">
+    <xacro:onrobot_gazebo namespace="$(arg namespace)" prefix="$(arg prefix)" control_yaml="$(arg control_yaml)" />
+  </xacro:if>
+</robot>

@@ -15,7 +15,7 @@
 
 
   <!-- Include required macros -->
-  <xacro:include filename="$(find onrobot_description)/urdf/common/rg.control.xacro" />
+  <xacro:include filename="$(find onrobot_description)/urdf/common/rg.ros2_control.xacro" />
   <xacro:include filename="$(find onrobot_description)/urdf/common/rg.gazebo.xacro" />
   <xacro:include filename="$(find onrobot_description)/urdf/rg6/rg6.description.xacro" />
 

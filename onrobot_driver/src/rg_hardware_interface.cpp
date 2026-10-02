@@ -6,8 +6,9 @@ namespace rg_hardware_interface
 {
 
     RGHardwareInterface::RGHardwareInterface()
-        : finger_width_state_(0.0),
-          finger_width_command_(0.0)
+        : finger_width_position_state_(0.0),
+          finger_width_velocity_state_(0.0),
+          finger_width_position_command_(0.0)
     {
     }
 
@@ -90,8 +91,9 @@ namespace rg_hardware_interface
         }
 
         // Initialise joint variables
-        finger_width_state_ = 0.0;
-        finger_width_command_ = 0.0;
+        finger_width_position_state_ = 0.0;
+        finger_width_velocity_state_ = 0.0;
+        finger_width_position_command_ = 0.0;
         return hardware_interface::CallbackReturn::SUCCESS;
     }
 
@@ -110,9 +112,9 @@ namespace rg_hardware_interface
             }
 
             // Get the starting width of the gripper.
-            finger_width_state_ = gripper_->getWidthWithOffset();
+            finger_width_position_state_ = gripper_->getWidthWithOffset();
             // Set the command to the current state to avoid moving to 0.0 at start.
-            finger_width_command_ = finger_width_state_;
+            finger_width_position_command_ = finger_width_position_state_;
         }
         catch (const std::exception &e)
         {
@@ -155,14 +157,15 @@ namespace rg_hardware_interface
     std::vector<hardware_interface::StateInterface> RGHardwareInterface::export_state_interfaces()
     {
         std::vector<hardware_interface::StateInterface> state_interfaces;
-        state_interfaces.emplace_back(hardware_interface::StateInterface(prefix_ + "finger_width", "position", &finger_width_state_));
+        state_interfaces.emplace_back(hardware_interface::StateInterface(prefix_ + "finger_width", "position", &finger_width_position_state_));
+        state_interfaces.emplace_back(hardware_interface::StateInterface(prefix_ + "finger_width", "velocity", &finger_width_velocity_state_));
         return state_interfaces;
     }
 
     std::vector<hardware_interface::CommandInterface> RGHardwareInterface::export_command_interfaces()
     {
         std::vector<hardware_interface::CommandInterface> command_interfaces;
-        command_interfaces.emplace_back(hardware_interface::CommandInterface(prefix_ + "finger_width", "position", &finger_width_command_));
+        command_interfaces.emplace_back(hardware_interface::CommandInterface(prefix_ + "finger_width", "position", &finger_width_position_command_));
         return command_interfaces;
     }
 
@@ -177,7 +180,8 @@ namespace rg_hardware_interface
         }
         try
         {
-            finger_width_state_ = gripper_->getWidthWithOffset();
+            finger_width_position_state_ = gripper_->getWidthWithOffset();
+            // TODO: Get or calculate velocity
         }
         catch (const std::exception &e)
         {
@@ -198,7 +202,7 @@ namespace rg_hardware_interface
         }
         try
         {
-            gripper_->moveGripper(finger_width_command_);
+            gripper_->moveGripper(finger_width_position_command_);
         }
         catch (const std::exception &e)
         {

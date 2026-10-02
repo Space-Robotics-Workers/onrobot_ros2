@@ -46,8 +46,9 @@ namespace rg_hardware_interface
         std::string prefix_;
 
         // Internal joint variable (position) in SI units (metres).
-        double finger_width_state_;   // measured state (m)
-        double finger_width_command_; // commanded position (m)
+        double finger_width_position_state_;   // measured state (m)
+        double finger_width_velocity_state_;
+        double finger_width_position_command_; // commanded position (m)
 
         // Connection parameters from hardware_info.
         std::string onrobot_type_;
